@@ -1,0 +1,85 @@
+-- URL da imagem que deseja usar
+local imageUrl = "rbxassetid://14862323455"  -- Substitua pelo AssetId da sua imagem
+
+-- Nome que deseja exibir
+local notificationName = "Team SyniX"  -- Substitua pelo nome que deseja
+
+-- Cor do nome
+local nameColor = Color3.new(220, 220, 220)  -- Cor vermelha (RGB)
+
+-- Tamanho do texto
+local textSize = 40  -- Ajuste o tamanho do texto conforme necessário
+
+-- Tempo de exibição da mensagem (em segundos)
+local displayTime = 5
+
+-- Instâncias
+local notfic = Instance.new("ScreenGui")
+local backNOT = Instance.new("Frame")
+local ImageLabel = Instance.new("ImageLabel")
+local SynixText = Instance.new("TextLabel")
+
+-- Propriedades
+notfic.Name = "notfic"
+notfic.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+backNOT.Name = "backNOT"
+backNOT.Parent = notfic
+backNOT.Size = UDim2.new(1, 0, 1, 0)
+backNOT.BackgroundColor3 = Color3.new(0, 0, 0)
+backNOT.BackgroundTransparency = 0.4
+
+ImageLabel.Parent = backNOT
+ImageLabel.Size = UDim2.new(0, 200, 0, 200)
+ImageLabel.Position = UDim2.new(0.5, -100, 0.5, -100)
+ImageLabel.Image = imageUrl
+ImageLabel.BackgroundTransparency = 1
+
+SynixText.Parent = backNOT
+SynixText.Size = UDim2.new(0, 200, 0, 50)
+SynixText.Position = UDim2.new(0.5, -100, 0.5, 100)
+SynixText.Font = Enum.Font.GothamBlack
+SynixText.Text = notificationName
+SynixText.BackgroundTransparency = 1
+SynixText.TextColor3 = nameColor
+SynixText.TextSize = textSize
+
+-- Função para animar o desaparecimento
+local function fadeOutGUI()
+    local startTime = tick()
+    local animationDuration = 3  -- Duração da animação em segundos
+    while tick() - startTime < animationDuration do
+        local elapsedTime = tick() - startTime
+        local transparency = elapsedTime / animationDuration
+        backNOT.BackgroundTransparency = transparency
+        ImageLabel.ImageTransparency = transparency
+        SynixText.TextTransparency = transparency
+        wait(0.1)  -- Tempo de espera de 0.1 segundos
+    end
+end
+
+-- Exibir a GUI
+notfic.Enabled = true
+
+-- Iniciar a animação de desaparecimento
+fadeOutGUI()
+
+-- Esperar pelo tempo de exibição
+wait(displayTime)
+
+-- Ocultar a GUI
+notfic.Enabled = false
+
+-- Função para executar o script externo
+local function executeExternalScript()
+    local scriptContent = game:HttpGet("https://raw.githubusercontent.com/HagoromoMd/Energy-clash-simulator-comad2/main/Beta")
+    local scriptFunction = loadstring(scriptContent)
+    if scriptFunction then
+        scriptFunction()
+    else
+        warn("Falha ao carregar e executar o script externo.")
+    end
+end
+
+-- Executar o script externo após a animação
+executeExternalScript()
